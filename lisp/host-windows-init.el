@@ -1,0 +1,5 @@
+(setq my/citar-bibliography '("/mnt/c/Users/alexb/Tresorit/Documents/books/references.bib"))
+(setq my/citar-library-paths '("/mnt/c/Users/alexb/Tresorit/Documents/books"))
+(setq my/denote-directory "/mnt/c/Users/alexb/Tresorit/Documents/notes")
+(setq my/system-theme 'modus-operandi)
+(setq my/org-directory "/mnt/c/Users/alexb/Nextcloud/org/")

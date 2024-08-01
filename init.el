@@ -16,6 +16,8 @@
 
 (load-lisp-file (concat "host-" (system-name) "-init.el"))
 
+(setq use-package-compute-statistics t)
+
 (use-package package
   :init
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -46,48 +48,48 @@
 (use-package cdlatex
   :ensure t)
 
-(use-package citar
-  :ensure t
-  :bind (("C-c w c" . citar-create-note)
-         ("C-c w o" . citar-open)
-         ("C-c w F" . citar-open-files)
-         ("C-c w N" . citar-open-notes))
-  :hook ((LaTeX-mode . citar-capf-setup)
-         (org-mode . citar-capf-setup))
-  :config
-  (setq citar-bibliography my/citar-bibliography)
-  (setq citar-library-paths my/citar-library-paths)
-  (setq citar-notes-paths my/citar-notes-paths))
+;; (use-package citar
+;;   :ensure t
+;;   :bind (("C-c w c" . citar-create-note)
+;;          ("C-c w o" . citar-open)
+;;          ("C-c w F" . citar-open-files)
+;;          ("C-c w N" . citar-open-notes))
+;;   :hook ((LaTeX-mode . citar-capf-setup)
+;;          (org-mode . citar-capf-setup))
+;;   :config
+;;   (setq citar-bibliography my/citar-bibliography)
+;;   (setq citar-library-paths my/citar-library-paths)
+;;   (setq citar-notes-paths my/citar-notes-paths))
 
-(use-package citar-denote
-  :ensure t
-  :bind (("C-c w f" . citar-denote-open-file)
-         ("C-c w n" . citar-denote-open-note)
-         ("C-c w d" . citar-denote-dwim)
-         ("C-c w e" . citar-denote-open-reference-entry)
-         ("C-c w a" . citar-denote-add-citekey)
-         ("C-c w k" . citar-denote-remove-citekey)
-         ("C-c w r" . citar-denote-find-reference)
-         ("C-c w l" . citar-denote-link-reference)
-         ("C-c w i" . citar-denote-find-citation)
-         ("C-c w x" . citar-denote-nocite)
-         ("C-c w y" . citar-denote-cite-nocite)
-         ("C-c w z" . citar-denote-nobib))
-  :config
-  (citar-denote-mode 1)
+;; (use-package citar-denote
+;;   :ensure t
+;;   :bind (("C-c w f" . citar-denote-open-file)
+;;          ("C-c w n" . citar-denote-open-note)
+;;          ("C-c w d" . citar-denote-dwim)
+;;          ("C-c w e" . citar-denote-open-reference-entry)
+;;          ("C-c w a" . citar-denote-add-citekey)
+;;          ("C-c w k" . citar-denote-remove-citekey)
+;;          ("C-c w r" . citar-denote-find-reference)
+;;          ("C-c w l" . citar-denote-link-reference)
+;;          ("C-c w i" . citar-denote-find-citation)
+;;          ("C-c w x" . citar-denote-nocite)
+;;          ("C-c w y" . citar-denote-cite-nocite)
+;;          ("C-c w z" . citar-denote-nobib))
+;;   :config
+;;   (citar-denote-mode 1)
 
-  (defun citar-denote-open-file (&optional prefix)
-    (interactive "P")
-    (let* ((file buffer-file-name)
-           (citekey (citar-denote--retrieve-references file)))
-      (if prefix (other-window-prefix))
-      (citar-open-files citekey))))
+;;   (defun citar-denote-open-file (&optional prefix)
+;;     (interactive "P")
+;;     (let* ((file buffer-file-name)
+;;            (citekey (citar-denote--retrieve-references file)))
+;;       (if prefix (other-window-prefix))
+;;       (citar-open-files citekey))))
 
-(use-package citar-embark
-  :ensure t
-  :after citar embark
-  :config
-  (citar-embark-mode 1))
+;; (use-package citar-embark
+;;   :ensure t
+;;   :after citar embark
+;;   :config
+;;   (citar-embark-mode 1))
 
 (use-package comp
   :config
@@ -160,10 +162,9 @@
   (setq xref-show-definitions-function #'consult-xref)
 
   :config
-  ;; TODO Make use of org-agenda files
   (defun my/consult-search-org-files ()
     (interactive)
-    (consult-ripgrep "~/Nextcloud/org/")))
+    (consult-ripgrep org-agenda-files)))
 
 (use-package corfu
   :ensure t
@@ -191,41 +192,41 @@
   :config
   (delete-selection-mode 1))
 
-(use-package denote
-  :ensure t
-  :bind (("C-c n n" . denote)
-         ("C-c n o" . denote-open-or-create)
-         ("C-c n c" . denote-region)
-         ("C-c n N" . denote-type)
-         ("C-c n d" . denote-date)
-         ("C-c n z" . denote-signature)
-         ("C-c n s" . denote-subdirectory)
-         ("C-c n t" . denote-template)
-         ("C-c n r" . denote-rename-file)
-         ("C-c n R" . denote-rename-file-using-front-matter)
-         :map org-mode-map :package org
-         ("C-c n k" . denote-keywords-add)
-         ("C-c n K" . denote-keywords-remove)
-         ("C-c n i" . denote-link-or-create)
-         ("C-c n I" . denote-add-links)
-         ("C-c n b" . denote-backlinks)
-         ("C-c n f f" . denote-find-link)
-         ("C-c n f b" . denote-find-backlink)
-         :map dired-mode-map :package dired
-         ("C-c C-d C-i" . denote-link-dired-marked-notes)
-         ("C-c C-d C-r" . denote-dired-rename-files)
-         ("C-c C-d C-k" . denote-dired-rename-marked-files-with-keywords)
-         ("C-c C-d C-R" . denote-dired-rename-marked-files-using-front-matter))
-  :hook (dired-mode . denote-dired-mode-in-directories)
-  :config
-  ;; TODO: add optional extension
-  ;; TODO: handle denote keywords properly
-  ;; TODO: optional output-dir
-  (defun my/denote-uml-file (description)
-    (concat (file-name-sans-extension (file-name-nondirectory buffer-file-name)) "-" description "__"  "uml" ".svg"))
+;; (use-package denote
+;;   :ensure t
+;;   :bind (("C-c n n" . denote)
+;;          ("C-c n o" . denote-open-or-create)
+;;          ("C-c n c" . denote-region)
+;;          ("C-c n N" . denote-type)
+;;          ("C-c n d" . denote-date)
+;;          ("C-c n z" . denote-signature)
+;;          ("C-c n s" . denote-subdirectory)
+;;          ("C-c n t" . denote-template)
+;;          ("C-c n r" . denote-rename-file)
+;;          ("C-c n R" . denote-rename-file-using-front-matter)
+;;          :map org-mode-map :package org
+;;          ("C-c n k" . denote-keywords-add)
+;;          ("C-c n K" . denote-keywords-remove)
+;;          ("C-c n i" . denote-link-or-create)
+;;          ("C-c n I" . denote-add-links)
+;;          ("C-c n b" . denote-backlinks)
+;;          ("C-c n f f" . denote-find-link)
+;;          ("C-c n f b" . denote-find-backlink)
+;;          :map dired-mode-map :package dired
+;;          ("C-c C-d C-i" . denote-link-dired-marked-notes)
+;;          ("C-c C-d C-r" . denote-dired-rename-files)
+;;          ("C-c C-d C-k" . denote-dired-rename-marked-files-with-keywords)
+;;          ("C-c C-d C-R" . denote-dired-rename-marked-files-using-front-matter))
+;;   :hook (dired-mode . denote-dired-mode-in-directories)
+;;   :config
+;;   ;; TODO: add optional extension
+;;   ;; TODO: handle denote keywords properly
+;;   ;; TODO: optional output-dir
+;;   (defun my/denote-uml-file (description)
+;;     (concat (file-name-sans-extension (file-name-nondirectory buffer-file-name)) "-" description "__"  "uml" ".svg"))
 
-  (setq denote-directory my/denote-directory)
-  (setq denote-dired-directories (list denote-directory)))
+;;   (setq denote-directory my/denote-directory)
+;;   (setq denote-dired-directories (list denote-directory)))
 
 (use-package dired
   :bind (nil
@@ -291,13 +292,15 @@
 	      (emacs-lisp-docstring-fill-column t))
       (fill-paragraph nil region)))
 
-  (add-to-list 'default-frame-alist '(font . "Iosevka-10")))
+  (add-to-list 'default-frame-alist '(font . "Iosevka-10"))
+
+  (setq read-buffer-completion-ignore-case t))
 
 (use-package emacs
   :if (or window-system (daemonp))
   :bind ("<f5>" . modus-themes-toggle)
   :config
-  (setq modus-themes-mode-line (quote (accented)))
+  ;; (setq modus-themes-mode-line (quote (accented)))
   (load-theme my/system-theme :no-confirm))
 
 (use-package embark
@@ -335,18 +338,21 @@
          :map ctl-x-x-map
          ("s" . flyspell-mode)))
 
+(use-package hl-line
+  :hook (org-agenda-mode . hl-line-mode))
+
 (use-package ispell
   :custom
   (ispell-program-name "hunspell"))
 
-(use-package lin
-  :ensure t
-  :if window-system
-  :config
-  (setq lin-mode-hooks '(dired-mode-hook
-			             org-agenda-mode-hook
-                         prog-mode-hook))
-  (lin-global-mode 1))
+;; (use-package lin
+;;   :ensure t
+;;   :if (window-system)
+;;   :config
+;;   (setq lin-mode-hooks '(dired-mode-hook
+;; 			             org-agenda-mode-hook
+;;                          prog-mode-hook))
+;;   (lin-global-mode 1))
 
 (use-package magit
   :ensure t
@@ -363,6 +369,11 @@
   :ensure t
   :mode "\\.md\\'")
 
+(use-package minibuffer
+  :config
+  (setq completion-cycle-threshold 3)
+  (setq read-file-name-completion-ignore-case t))
+
 (use-package minions
   :ensure t
   :custom
@@ -371,7 +382,7 @@
   (minions-mode 1))
 
 (use-package mu4e
-  :demand
+  :commands (mu4e)
   :hook ((dired-mode-hook . turn-on-gnus-dired-mode)
          (mu4e-compose-mode-hook . flyspell-mode))
   :bind (nil
@@ -431,36 +442,55 @@
   :hook (org-babel-after-execute . org-redisplay-inline-images))
 
 (use-package ob-java
+  :after org
   :config
   (org-babel-do-load-languages 'org-babel-load-languages '((java . t)))
   (nconc org-babel-default-header-args:java '((:dir . nil))))
-
-(use-package ob-plantuml
-  :after plantuml-mode org
-  :custom
-  (org-plantuml-jar-path plantuml-jar-path)
-  :config
-  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t))))
 
 (use-package ob-python
   :after org
   :config
   (org-babel-do-load-languages 'org-babel-load-languages '((python . t))))
 
-(use-package oc
-  :after citar org
-  :bind ("C-c b" . org-cite-insert)
-  :custom
-  (org-cite-global-bibliography citar-bibliography)
-  (org-cite-insert-processor 'citar)
-  (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar))
+(use-package ob-plantuml
+  :after (org plantuml-mode)
+  :config
+  (setq org-plantuml-jar-path plantuml-jar-path)
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t))))
+
+;; (use-package oc
+;;   :after citar org
+;;   :bind ("C-c b" . org-cite-insert)
+;;   :custom
+;;   (org-cite-global-bibliography citar-bibliography)
+;;   (org-cite-insert-processor 'citar)
+;;   (org-cite-follow-processor 'citar)
+;;   (org-cite-activate-processor 'citar))
 
 (use-package ol
-  :bind ("C-c l" . org-store-link))
+  :after org-id
+  :bind ("C-c l" . org-store-link)
+  :config
+  (setq org-link-descriptive nil)
 
-(use-package ol-man)
+  (defun my/org-id-link-description (link desc)
+    "Return description for `id:` links. Use DESC if non-nil, otherwise fetch headline."
+    (or desc
+        (let ((id (substring link 3)) ; remove "id:" prefix
+              (headline nil))
+          (org-map-entries
+           (lambda ()
+             (when (string= (org-id-get) id)
+               (setq headline (nth 4 (org-heading-components)))))
+           nil 'file)
+          headline)))
+  
+  (org-link-set-parameters "id"
+                           :complete (lambda () (concat "id:" (org-id-get-with-outline-path-completion)))
+                           :insert-description 'my/org-id-link-description))
+
+(use-package ol-man :after org)
 
 (use-package org
   :bind (nil
@@ -475,68 +505,44 @@
          (org-mode . visual-line-mode))
   :config
   (setq org-directory my/org-directory)
-  (setq org-agenda-files (list org-directory "~/Documents/notes/"))
-  (setq org-default-notes-file (concat org-directory "/notes.org"))
+  (setq org-agenda-files (list org-directory))
+  (setq org-default-notes-file (concat org-directory "notes.org"))
 
   (setq org-image-actual-width nil)
-
-  (setq org-hide-emphasis-markers t)
-  (setq org-link-descriptive t)
-  (setq org-pretty-entities t)
-
-  (setq org-startup-folded t)
-  (setq org-startup-indented t)
-  (setq org-startup-with-inline-images t)
-
-  (setq org-log-done 'time)
-  (setq org-log-into-drawer t)
 
   (add-to-list 'org-structure-template-alist '("p" . "src python") t)
   (add-to-list 'org-structure-template-alist '("P" . "src plantuml") t)
 
-  (setq org-tag-alist
-        '(("@davos")
-          ("@helsinki")
-          ("@lucerne")
-          ("@weggis")
-          ("@zurich")
-          ("buy")
-          ("call")
-          ("inbox")
-          ("meeting")
-          ("project")
-          ("someday")
-          ("task")
-          ("wait")))
-
   (setq org-preview-latex-image-directory "~/.local/share/ltximg/")
   (setq org-preview-latex-default-process 'dvisvgm)
+  
   (plist-put org-format-latex-options :foreground nil)
   (plist-put org-format-latex-options :background nil)
+
   (when (string-equal system-name "thinkpad")
     (plist-put org-format-latex-options :scale 0.3)))
 
 (use-package org-agenda
-  :demand
   :bind ("C-c a" . org-agenda)
   :config
   (setq org-agenda-custom-commands
         '(("c" . "Custom")
 	      ("ci" "Inbox" tags-todo "+inbox")
 	      ("cs" "Shopping List" tags-todo "+buy")
-          ("ce" "Errands" tags-todo "+errand-someday-wait")
-          ("cw" "Waiting" tags-todo "+wait")
+          ("ce" "Errands" tags-todo "+errand-someday/!-WAITING")
+          ("ct" "Started" tags "/STARTED")
+          ("cw" "Waiting" tags "/WAITING")
           ("cS" "Someday" tags-todo "+someday"))))
 
 ;; NOTE: Probably broken in org 9.7
-(use-package org-appear
-  :ensure t
-  :hook (org-mode . org-appear-mode)
-  :custom
-  (org-appear-autolinks t)
-  (org-appear-autosubmarkers t)
-  (org-appear-autoentities t)
-  (org-appear-inside-latex t))
+;; (use-package org-appear
+;;   :ensure t
+;;   :hook (org-mode . org-appear-mode)
+;;   :custom
+;;   (org-appear-autolinks t)
+;;   (org-appear-autosubmarkers t)
+;;   (org-appear-autoentities t)
+;;   (org-appear-inside-latex t))
 
 (use-package org-capture
   :bind ("C-c c" . org-capture)
@@ -563,22 +569,25 @@
 ;;   :ensure t
 ;;   :hook (org-mode . org-fragtog-mode))
 
+(use-package org-faces
+  :after org
+  :config
+  (setq org-todo-keyword-faces '(("STARTED" . "yellow")
+                                 ("WAITING" . "orange")
+                                 ("CANCELED" . "gray"))))
+
 (use-package org-id
+  :after org
   :config
   (setq org-id-link-to-org-use-id t))
-
-(use-package org-journal
-  :ensure t
-  :config
-  (setq org-journal-dir "~/Nextcloud/org/journal/"))
 
 (use-package org-pdftools
   :hook (org-mode . org-pdftools-setup-link))
 
-(use-package org-protocol
-  :demand)
+(use-package org-protocol)
 
 (use-package org-refile
+  :commands (org-refile) ; not sure why this is required, without it, org-refile does not load lazily, and if i use :after org, the keybinding is not defined
   :bind ("C-c o" . (lambda () (interactive) (org-refile '(1))))
   :config
   (setq org-outline-path-complete-in-steps nil)
@@ -587,10 +596,11 @@
   (setq org-refile-targets '((org-agenda-files . (:maxlevel . 9)))))
 
 (use-package org-src
+  :after org
   :config
   (setq org-edit-src-content-indentation 0))
 
-(use-package org-tempo)
+(use-package org-tempo :after org)
 
 (use-package orderless
   :ensure t
@@ -638,7 +648,7 @@
   (pdf-tools-install :no-query))
 
 (use-package pixel-scroll
-  :if (equal system-name "thinkpad")
+  :if (version<= "29.1" emacs-version)
   :config
   (pixel-scroll-precision-mode 1))
 

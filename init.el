@@ -39,6 +39,10 @@
 (use-package bibtex
   :hook (bibtex-mode . (lambda () (setq-local fill-column 10000))))
 
+(use-package browse-url
+  :config
+  (setq browse-url-browser-function 'browse-url-firefox))
+
 (use-package cape
   :ensure t
   :commands cape-file
@@ -472,8 +476,6 @@
   :after org-id
   :bind ("C-c l" . org-store-link)
   :config
-  (setq org-link-descriptive nil)
-
   (defun my/org-id-link-description (link desc)
     "Return description for `id:` links. Use DESC if non-nil, otherwise fetch headline."
     (or desc

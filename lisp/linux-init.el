@@ -3,4 +3,4 @@
 (setq my/citar-notes-paths '("~/Documents/books/notes"))
 (setq my/denote-directory "~/Documents/notes")
 (setq my/system-theme 'modus-vivendi)
-(setq my/org-directory "~/kDrive/org/")
+(setq my/org-directory "~/drive/org/")

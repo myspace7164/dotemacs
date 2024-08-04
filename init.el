@@ -362,7 +362,8 @@
   :ensure t
   :defer t
   :config
-  (setq magit-repository-directories '(("~/Documents/git" . 1))))
+  (setq magit-repository-directories '(("~/git" . 1)
+                                       ("~/.emacs.d" . 0))))
 
 (use-package marginalia
   :ensure t

@@ -529,13 +529,15 @@
   :bind ("C-c a" . org-agenda)
   :config
   (setq org-agenda-custom-commands
-        '(("c" . "Custom")
-	      ("ci" "Inbox" tags-todo "+inbox")
-	      ("cs" "Shopping List" tags-todo "+buy")
-          ("ce" "Errands" tags-todo "+errand-someday/!-WAITING")
-          ("ct" "Started" tags "/STARTED")
-          ("cw" "Waiting" tags "/WAITING")
-          ("cS" "Someday" tags-todo "+someday"))))
+        '(("p" . "Personal")
+	      ("pi" "Inbox" tags-todo "+inbox-freyag")
+	      ("ps" "Shopping List" tags-todo "+buy-freyag")
+          ("pe" "Errands" tags-todo "+errand-someday-freyag/!-WAITING")
+          ("pt" "Started" tags "-freyag/STARTED")
+          ("pw" "Waiting" tags "-freyag/WAITING")
+          ("pS" "Someday" tags-todo "+someday-freyag")
+          ("w" . "Work")
+          ("wt" "Todo" tags-todo "+freyag"))))
 
 ;; NOTE: Probably broken in org 9.7
 ;; (use-package org-appear
@@ -551,20 +553,26 @@
   :bind ("C-c c" . org-capture)
   :config
   (setq org-capture-templates
-        '(("i" "Inbox" entry (file+headline "notes.org" "Inbox")
+        '(("p" "Personal")
+          ("pi" "Inbox" entry (file+headline "notes.org" "Inbox")
            "* %?")
-          ("e" "Errand" entry (file+headline "notes.org" "Errands")
+          ("pe" "Errand" entry (file+headline "notes.org" "Errands")
            "* TODO %?")
-          ("m" "Mail" entry (file+headline "notes.org" "Inbox")
+          ("pm" "Mail" entry (file+headline "notes.org" "Inbox")
            "* %:fromname\n%a\n%?")
-          ("j" "Journal" entry (file+olp+datetree "notes.org" "Journal")
-           (file "~/Templates/journal.org"))
-          ("J" "Journal (custom datetime)" entry (file+olp+datetree "notes.org" "Journal")
+          ("pj" "Journal" entry (file+olp+datetree "notes.org" "Journal")
+           "* %U %^{Title}\n%?")
+          ("pJ" "Journal (custom datetime)" entry (file+olp+datetree "notes.org" "Journal")
            (file "~/Templates/journal.org") :time-prompt t)
-          ("p" "Protocol" entry (file+headline "notes.org" "Inbox")
+          ("pp" "Protocol" entry (file+headline "notes.org" "Inbox")
            "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
-	      ("L" "Protocol Link" entry (file+headline "notes.org" "Inbox")
-           "* %? [[%:link][%:description]] \nCaptured On: %U"))))
+	      ("pL" "Protocol Link" entry (file+headline "notes.org" "Inbox")
+           "* %? [[%:link][%:description]] \nCaptured On: %U")
+          ("w" "Work")
+          ("wj" "Journal" entry (file+olp+datetree "frey_ag.org" "Journal")
+           "* %U %^{Title}\n%?")
+          ("wJ" "Journal (custom datetime)" entry (file+olp+datetree "frey_ag.org" "Journal")
+           (file "* %U %^{Title}\n%?") :time-prompt t))))
 
 ;; TODO This needs some fixing, org-latex-previews are toggled even when latex previews are disabled
 ;; Write a function toggle-org-fragtog (or similar) which when enabled, will generate all latex previews and enable org-fragtog-mode, if org-fragtog-mode is disabled, no latex previews should be generated
@@ -585,6 +593,7 @@
   (setq org-id-link-to-org-use-id t))
 
 (use-package org-pdftools
+  :if (string-equal system-name "thinkpad")
   :hook (org-mode . org-pdftools-setup-link))
 
 (use-package org-protocol)
@@ -645,6 +654,7 @@
            :publishing-function org-publish-attachment))))
 
 (use-package pdf-tools
+  :if (string-equal system-name "thinkpad")
   :ensure t
   :magic ("%PDF" . pdf-view-mode)
   :config

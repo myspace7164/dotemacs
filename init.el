@@ -511,6 +511,8 @@
   (setq org-agenda-files (list org-directory))
   (setq org-default-notes-file (concat org-directory "notes.org"))
 
+  (setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "WAITING(w@/!)" "|" "DONE(d)" "CANCELED(c@)")))
+
   (setq org-image-actual-width nil)
 
   (add-to-list 'org-structure-template-alist '("p" . "src python") t)
@@ -569,6 +571,8 @@
 	      ("pL" "Protocol Link" entry (file+headline "notes.org" "Inbox")
            "* %? [[%:link][%:description]] \nCaptured On: %U")
           ("w" "Work")
+          ("wi" "Inbox" entry (file+headline "frey_ag.org" "Inbox")
+           "* %?")
           ("wj" "Journal" entry (file+olp+datetree "frey_ag.org" "Journal")
            "* %U %^{Title}\n%?")
           ("wJ" "Journal (custom datetime)" entry (file+olp+datetree "frey_ag.org" "Journal")

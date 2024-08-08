@@ -41,7 +41,7 @@
 
 (use-package browse-url
   :config
-  (setq browse-url-browser-function 'browse-url-firefox))
+  (setq browse-url-browser-function my/browse-url-browser-function))
 
 (use-package cape
   :ensure t
@@ -186,6 +186,18 @@
       (corfu-mode 1)))
   (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
   (global-corfu-mode 1))
+
+(use-package csv-mode
+  :ensure t
+  :mode "\\.csv\\'"
+  :hook (csv-mode . csv-guess-set-separator)
+  :bind (("C-c C-b" . csv-backward-field)
+         ("C-c C-f" . csv-forward-field)
+         :repeat-map csv-mode-repeat-map
+         ("C-b" . csv-backward-field)
+         ("C-f" . csv-forward-field)
+         ("b" . csv-backward-field)
+         ("f" . csv-forward-field)))
 
 (use-package cus-edit
   :config
@@ -512,6 +524,7 @@
   (setq org-default-notes-file (concat org-directory "notes.org"))
 
   (setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "WAITING(w@/!)" "|" "DONE(d)" "CANCELED(c@)")))
+  (setq org-use-fast-todo-selection 'expert)
 
   (setq org-image-actual-width nil)
 

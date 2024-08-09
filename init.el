@@ -43,6 +43,10 @@
   :config
   (setq browse-url-browser-function my/browse-url-browser-function))
 
+(use-package calendar
+  :config
+  (setq calendar-week-start-day 1))
+
 (use-package cape
   :ensure t
   :commands cape-file
@@ -308,7 +312,7 @@
 	      (emacs-lisp-docstring-fill-column t))
       (fill-paragraph nil region)))
 
-  (add-to-list 'default-frame-alist '(font . "Iosevka-10"))
+  (add-to-list 'default-frame-alist '(font . my/default-font))
 
   (setq read-buffer-completion-ignore-case t))
 
@@ -336,7 +340,7 @@
 
 (use-package faces
   :config
-  (set-face-attribute 'default nil :font "Iosevka-10"))
+  (set-face-attribute 'default nil :font my/default-font))
 
 (use-package files
   :config

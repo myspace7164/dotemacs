@@ -312,7 +312,7 @@
 	      (emacs-lisp-docstring-fill-column t))
       (fill-paragraph nil region)))
 
-  (add-to-list 'default-frame-alist '(font . my/default-font))
+  (add-to-list 'default-frame-alist '(font . "Iosevka-10"))
 
   (setq read-buffer-completion-ignore-case t))
 
@@ -340,7 +340,7 @@
 
 (use-package faces
   :config
-  (set-face-attribute 'default nil :font my/default-font))
+  (set-face-attribute 'default nil :font "Iosevka-10"))
 
 (use-package files
   :config

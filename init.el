@@ -312,7 +312,7 @@
 	      (emacs-lisp-docstring-fill-column t))
       (fill-paragraph nil region)))
 
-  (add-to-list 'default-frame-alist '(font . my/default-font))
+  (add-to-list 'default-frame-alist '(font . "Iosevka-10"))
 
   (setq read-buffer-completion-ignore-case t))
 
@@ -340,7 +340,7 @@
 
 (use-package faces
   :config
-  (set-face-attribute 'default nil :font my/default-font))
+  (set-face-attribute 'default nil :font "Iosevka-10"))
 
 (use-package files
   :config
@@ -349,9 +349,7 @@
   (setq backup-directory-alist `(("." . ,(locate-user-emacs-file "backups"))))
   (setq backup-by-copying t)
   (setq version-control t)
-  (setq delete-old-versions t)
-
-  (auto-save-visited-mode 1))
+  (setq delete-old-versions t))
 
 (use-package flyspell
   :bind (nil
@@ -527,6 +525,8 @@
   (setq org-agenda-files (list org-directory))
   (setq org-default-notes-file (concat org-directory "notes.org"))
 
+  (setq org-special-ctrl-k t)
+
   (setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "WAITING(w@/!)" "|" "DONE(d)" "CANCELED(c@)")))
   (setq org-use-fast-todo-selection 'expert)
 
@@ -593,7 +593,7 @@
           ("wj" "Journal" entry (file+olp+datetree "frey_ag.org" "Journal")
            "* %U %^{Title}\n%?")
           ("wJ" "Journal (custom datetime)" entry (file+olp+datetree "frey_ag.org" "Journal")
-           (file "* %U %^{Title}\n%?") :time-prompt t))))
+           "* %U %^{Title}\n%?" :time-prompt t))))
 
 ;; TODO This needs some fixing, org-latex-previews are toggled even when latex previews are disabled
 ;; Write a function toggle-org-fragtog (or similar) which when enabled, will generate all latex previews and enable org-fragtog-mode, if org-fragtog-mode is disabled, no latex previews should be generated

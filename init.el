@@ -281,7 +281,7 @@
   :ensure t)
 
 (use-package display-line-numbers
-  :hook (python-mode . display-line-numbers-mode))
+  :hook (prog-mode . display-line-numbers-mode))
 
 (use-package eglot
   :hook (python-mode . eglot-ensure))
@@ -357,7 +357,8 @@
          ("s" . flyspell-mode)))
 
 (use-package hl-line
-  :hook (org-agenda-mode . hl-line-mode))
+  :hook ((org-agenda-mode . hl-line-mode)
+         (prog-mode . hl-line-mode)))
 
 (use-package ispell
   :custom
@@ -590,6 +591,10 @@
           ("w" "Work")
           ("wi" "Inbox" entry (file+headline "frey_ag.org" "Inbox")
            "* %?")
+          ("wm" "Meeting notes" entry (file+headline "frey_ag.org" "Meetings")
+           "* %U %^{Title}\n%?")
+          ("wM" "Meeting notes (custom datetime)" entry (file+headline "frey_ag.org" "Meetings")
+           "* %^U %^{Title}\n%?")
           ("wj" "Journal" entry (file+olp+datetree "frey_ag.org" "Journal")
            "* %U %^{Title}\n%?")
           ("wJ" "Journal (custom datetime)" entry (file+olp+datetree "frey_ag.org" "Journal")
@@ -604,7 +609,7 @@
 (use-package org-faces
   :after org
   :config
-  (setq org-todo-keyword-faces '(("STARTED" . "yellow")
+  (setq org-todo-keyword-faces '(("STARTED" . org-scheduled)
                                  ("WAITING" . "orange")
                                  ("CANCELED" . "gray"))))
 
@@ -673,6 +678,9 @@
            :publishing-directory "/tmp/public/images"
            :recursive t
            :publishing-function org-publish-attachment))))
+
+(use-package pascal-mode
+  :mode "\\.st\\'")
 
 (use-package pdf-tools
   :if (string-equal system-name "thinkpad")
@@ -748,7 +756,16 @@
   (vertico-cycle t)
   (vertico-sort-function #'vertico-sort-length-alpha)
   :config
-  (vertico-mode 1)
+  (vertico-mode 1))
+
+(use-package vertico-mouse
+  :after vertico
+  :config
+  (vertico-mouse-mode 1))
+
+(use-package vertico-multiform
+  :after vertico
+  :config
   (vertico-multiform-mode 1))
 
 (use-package which-key

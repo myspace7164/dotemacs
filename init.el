@@ -614,6 +614,7 @@
   (setq org-id-link-to-org-use-id t))
 
 (use-package org-pdftools
+  :ensure t
   :if (string-equal system-name "thinkpad")
   :hook (org-mode . org-pdftools-setup-link))
 

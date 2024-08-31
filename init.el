@@ -524,7 +524,7 @@
          (org-mode . visual-line-mode))
   :config
   (setq org-directory my/org-directory)
-  (setq org-agenda-files (list org-directory))
+  (setq org-agenda-files (list org-directory "~/.local/share/org"))
   (setq org-default-notes-file (concat org-directory "notes.org"))
 
   (setq org-special-ctrl-k t)
@@ -607,6 +607,15 @@
 ;;   :ensure t
 ;;   :hook (org-mode . org-fragtog-mode))
 
+(use-package org-caldav
+  :ensure t
+  :config
+  (setq org-caldav-url "https://criteria8905.ddns.net/remote.php/dav/calendars/disrupt9645")
+  (setq org-caldav-calendar-id "personal")
+  (setq org-caldav-inbox "~/.local/share/org/calendar.org")
+
+  (run-at-time nil (* 5 60) 'org-caldav-sync))
+
 (use-package org-faces
   :after org
   :config
@@ -620,6 +629,7 @@
   (setq org-id-link-to-org-use-id t))
 
 (use-package org-pdftools
+  :ensure t
   :if (string-equal system-name "thinkpad")
   :hook (org-mode . org-pdftools-setup-link))
 

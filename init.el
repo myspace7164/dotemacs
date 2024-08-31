@@ -577,7 +577,7 @@
         '(("p" "Personal")
           ("pi" "Inbox" entry (file+headline "notes.org" "Inbox")
            "* %?")
-          ("pe" "Errand" entry (file+headline "notes.org" "Errands")
+          ("pt" "Task" entry (file+headline "notes.org" "Tasks")
            "* TODO %?")
           ("pm" "Mail" entry (file+headline "notes.org" "Inbox")
            "* %:fromname\n%a\n%?")
@@ -609,10 +609,17 @@
 
 (use-package org-caldav
   :ensure t
+  :after org
+  :hook (kill-emacs . org-caldav-sync-at-close)
+  :init
+  (defun org-caldav-sync-at-close ()
+    (org-caldav-sync)
+    (save-some-buffers))
   :config
   (setq org-caldav-url "https://criteria8905.ddns.net/remote.php/dav/calendars/disrupt9645")
   (setq org-caldav-calendar-id "personal")
   (setq org-caldav-inbox "~/.local/share/org/calendar.org")
+  (setq org-caldav-show-sync-results nil)
 
   (run-at-time nil (* 5 60) 'org-caldav-sync))
 

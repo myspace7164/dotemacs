@@ -111,6 +111,7 @@
          ("C-c k" . consult-kmacro)
          ("C-c m" . consult-man)
          ("C-c i" . consult-info)
+         ("C-c o" . consult-org-agenda)
          ([remap Info-search] . consult-info)
          ;; C-x bindings in `ctl-x-map'
          ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
@@ -626,7 +627,7 @@
 
 (use-package org-refile
   :commands (org-refile) ; not sure why this is required, without it, org-refile does not load lazily, and if i use :after org, the keybinding is not defined
-  :bind ("C-c o" . (lambda () (interactive) (org-refile '(1))))
+  ;; :bind ("C-c o" . (lambda () (interactive) (org-refile '(1))))
   :config
   (setq org-outline-path-complete-in-steps nil)
   (setq org-refile-use-outline-path 'file)

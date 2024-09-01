@@ -379,7 +379,8 @@
   :defer t
   :config
   (setq magit-repository-directories '(("~/git" . 1)
-                                       ("~/.emacs.d" . 0))))
+                                       ("~/.emacs.d" . 0)
+                                       ("~/.mozilla/firefox" . 1))))
 
 (use-package marginalia
   :ensure t
@@ -619,6 +620,7 @@
   (setq org-caldav-url "https://criteria8905.ddns.net/remote.php/dav/calendars/disrupt9645")
   (setq org-caldav-calendar-id "personal")
   (setq org-caldav-inbox "~/.local/share/org/calendar.org")
+  (setq org-caldav-files nil)
   (setq org-caldav-show-sync-results nil)
 
   (run-at-time nil (* 5 60) 'org-caldav-sync))

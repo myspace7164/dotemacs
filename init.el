@@ -544,7 +544,7 @@
   (plist-put org-format-latex-options :foreground nil)
   (plist-put org-format-latex-options :background nil)
 
-  (when (string-equal system-name "thinkpad")
+  (when (member (system-name) '("thinkpad"))
     (plist-put org-format-latex-options :scale 0.3)))
 
 (use-package org-agenda
@@ -609,6 +609,7 @@
 ;;   :hook (org-mode . org-fragtog-mode))
 
 (use-package org-caldav
+  :if (member (system-name) '("thinkpad"))
   :ensure t
   :after org
   :hook (kill-emacs . org-caldav-sync-at-close)
@@ -639,7 +640,7 @@
 
 (use-package org-pdftools
   :ensure t
-  :if (string-equal system-name "thinkpad")
+  :if (member (system-name) '("thinkpad"))
   :hook (org-mode . org-pdftools-setup-link))
 
 (use-package org-protocol)
@@ -703,7 +704,7 @@
   :mode "\\.st\\'")
 
 (use-package pdf-tools
-  :if (string-equal system-name "thinkpad")
+  :if (member (system-name) '("thinkpad"))
   :ensure t
   :magic ("%PDF" . pdf-view-mode)
   :config

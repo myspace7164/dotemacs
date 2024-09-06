@@ -550,16 +550,7 @@
 (use-package org-agenda
   :bind ("C-c a" . org-agenda)
   :config
-  (setq org-agenda-custom-commands
-        '(("p" . "Personal")
-	      ("pi" "Inbox" tags-todo "+inbox-freyag")
-	      ("ps" "Shopping List" tags-todo "+buy-freyag")
-          ("pe" "Errands" tags-todo "+errand-someday-freyag/!-WAITING")
-          ("pt" "Started" tags "-freyag/STARTED")
-          ("pw" "Waiting" tags "-freyag/WAITING")
-          ("pS" "Someday" tags-todo "+someday-freyag")
-          ("w" . "Work")
-          ("wt" "Todo" tags-todo "+freyag"))))
+  (setq org-agenda-custom-commands my/org-agenda-custom-commands))
 
 ;; NOTE: Probably broken in org 9.7
 ;; (use-package org-appear
@@ -574,33 +565,7 @@
 (use-package org-capture
   :bind ("C-c c" . org-capture)
   :config
-  (setq org-capture-templates
-        '(("p" "Personal")
-          ("pi" "Inbox" entry (file+headline "notes.org" "Inbox")
-           "* %?")
-          ("pt" "Task" entry (file+headline "notes.org" "Tasks")
-           "* TODO %?")
-          ("pm" "Mail" entry (file+headline "notes.org" "Inbox")
-           "* %:fromname\n%a\n%?")
-          ("pj" "Journal" entry (file+olp+datetree "notes.org" "Journal")
-           "* %U %^{Title}\n%?")
-          ("pJ" "Journal (custom datetime)" entry (file+olp+datetree "notes.org" "Journal")
-           (file "~/Templates/journal.org") :time-prompt t)
-          ("pp" "Protocol" entry (file+headline "notes.org" "Inbox")
-           "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
-	      ("pL" "Protocol Link" entry (file+headline "notes.org" "Inbox")
-           "* %? [[%:link][%:description]] \nCaptured On: %U")
-          ("w" "Work")
-          ("wi" "Inbox" entry (file+headline "frey_ag.org" "Inbox")
-           "* %?")
-          ("wm" "Meeting notes" entry (file+headline "frey_ag.org" "Meetings")
-           "* %U %^{Title}\n%?")
-          ("wM" "Meeting notes (custom datetime)" entry (file+headline "frey_ag.org" "Meetings")
-           "* %^U %^{Title}\n%?")
-          ("wj" "Journal" entry (file+olp+datetree "frey_ag.org" "Journal")
-           "* %U %^{Title}\n%?")
-          ("wJ" "Journal (custom datetime)" entry (file+olp+datetree "frey_ag.org" "Journal")
-           "* %U %^{Title}\n%?" :time-prompt t))))
+  (setq org-capture-templates my/org-capture-templates))
 
 ;; TODO This needs some fixing, org-latex-previews are toggled even when latex previews are disabled
 ;; Write a function toggle-org-fragtog (or similar) which when enabled, will generate all latex previews and enable org-fragtog-mode, if org-fragtog-mode is disabled, no latex previews should be generated

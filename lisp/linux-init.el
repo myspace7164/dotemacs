@@ -6,3 +6,27 @@
 (setq my/org-directory "~/drive/org/")
 (setq my/browse-url-browser-function 'browse-url-firefox)
 (setq my/default-font "Iosevka-10")
+
+(setq my/org-agenda-custom-commands
+        '(("i" "Inbox" tags-todo "+inbox")
+	      ("s" "Shopping List" tags-todo "+buy")
+          ("e" "Errands" tags-todo "+errand-someday/!-WAITING")
+          ("t" "Started" tags "/STARTED")
+          ("w" "Waiting" tags "/WAITING")
+          ("S" "Someday" tags-todo "+someday")))
+
+(setq my/org-capture-templates
+        '(("i" "Inbox" entry (file+headline "notes.org" "Inbox")
+           "* %?")
+          ("t" "Task" entry (file+headline "notes.org" "Tasks")
+           "* TODO %?")
+          ("m" "Mail" entry (file+headline "notes.org" "Inbox")
+           "* %:fromname\n%a\n%?")
+          ("j" "Journal" entry (file+olp+datetree "notes.org" "Journal")
+           "* %U %^{Title}\n%?")
+          ("J" "Journal (custom datetime)" entry (file+olp+datetree "notes.org" "Journal")
+           (file "~/Templates/journal.org") :time-prompt t)
+          ("p" "Protocol" entry (file+headline "notes.org" "Inbox")
+           "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
+	      ("L" "Protocol Link" entry (file+headline "notes.org" "Inbox")
+           "* %? [[%:link][%:description]] \nCaptured On: %U")))

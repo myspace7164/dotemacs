@@ -573,23 +573,23 @@
 ;;   :ensure t
 ;;   :hook (org-mode . org-fragtog-mode))
 
-(use-package org-caldav
-  :if (member (system-name) '("thinkpad"))
-  :ensure t
-  :after org
-  :hook (kill-emacs . org-caldav-sync-at-close)
-  :init
-  (defun org-caldav-sync-at-close ()
-    (org-caldav-sync)
-    (save-some-buffers))
-  :config
-  (setq org-caldav-url "https://criteria8905.ddns.net/remote.php/dav/calendars/disrupt9645")
-  (setq org-caldav-calendar-id "personal")
-  (setq org-caldav-inbox "~/.local/share/org/calendar.org")
-  (setq org-caldav-files nil)
-  (setq org-caldav-show-sync-results nil)
+;; (use-package org-caldav
+;;   :if (member (system-name) '("thinkpad"))
+;;   :ensure t
+;;   :after org
+;;   :hook (kill-emacs . org-caldav-sync-at-close)
+;;   :init
+;;   (defun org-caldav-sync-at-close ()
+;;     (org-caldav-sync)
+;;     (save-some-buffers))
+;;   :config
+;;   (setq org-caldav-url "https://criteria8905.ddns.net/remote.php/dav/calendars/disrupt9645")
+;;   (setq org-caldav-calendar-id "personal")
+;;   (setq org-caldav-inbox "~/.local/share/org/calendar.org")
+;;   (setq org-caldav-files nil)
+;;   (setq org-caldav-show-sync-results nil)
 
-  (run-at-time nil (* 5 60) 'org-caldav-sync))
+;;   (run-at-time nil (* 5 60) 'org-caldav-sync))
 
 (use-package org-faces
   :after org
@@ -602,6 +602,11 @@
   :after org
   :config
   (setq org-id-link-to-org-use-id t))
+
+(use-package org-keys
+  :after org
+  :config
+  (setq org-use-speed-commands t))
 
 (use-package org-pdftools
   :ensure t

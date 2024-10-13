@@ -3,7 +3,7 @@
 (setq my/citar-notes-paths '("~/Documents/books/notes"))
 (setq my/denote-directory "~/Documents/notes")
 (setq my/system-theme 'modus-vivendi)
-(setq my/org-directory "~/org/")
+(setq my/org-directory "~/Org/")
 (setq my/browse-url-browser-function 'browse-url-firefox)
 (setq my/default-font "Iosevka-10")
 

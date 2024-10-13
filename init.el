@@ -378,7 +378,7 @@
   :ensure t
   :defer t
   :config
-  (setq magit-repository-directories '(("~/git" . 1)
+  (setq magit-repository-directories '(("~/Git" . 1)
                                        ("~/.emacs.d" . 0)
                                        ("~/.mozilla/firefox" . 1))))
 

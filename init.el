@@ -380,7 +380,8 @@
   :config
   (setq magit-repository-directories '(("~/Git" . 1)
                                        ("~/.emacs.d" . 0)
-                                       ("~/.mozilla/firefox" . 1))))
+                                       ("~/.mozilla/firefox" . 1)
+                                       ("~/Mozilla/Firefox/Profiles" . 1))))
 
 (use-package marginalia
   :ensure t

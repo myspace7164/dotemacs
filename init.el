@@ -317,12 +317,16 @@
 
   (setq read-buffer-completion-ignore-case t))
 
+;; (use-package emacs
+;;   :if (or window-system (daemonp))
+;;   :bind ("<f5>" . modus-themes-toggle)
+;;   :config
+;;   ;; (setq modus-themes-mode-line (quote (accented)))
+;;   (load-theme my/system-theme :no-confirm))
+
 (use-package emacs
-  :if (or window-system (daemonp))
-  :bind ("<f5>" . modus-themes-toggle)
   :config
-  ;; (setq modus-themes-mode-line (quote (accented)))
-  (load-theme my/system-theme :no-confirm))
+  (load-theme 'tango-dark :no-confirm))
 
 (use-package embark
   :ensure t
@@ -378,7 +382,7 @@
   :ensure t
   :defer t
   :config
-  (setq magit-repository-directories '(("~/Git" . 1)
+  (setq magit-repository-directories '(("~/src" . 1)
                                        ("~/.emacs.d" . 0)
                                        ("~/.mozilla/firefox" . 1)
                                        ("~/Mozilla/Firefox/Profiles" . 1))))
@@ -574,23 +578,24 @@
 ;;   :ensure t
 ;;   :hook (org-mode . org-fragtog-mode))
 
-;; (use-package org-caldav
-;;   :if (member (system-name) '("thinkpad"))
-;;   :ensure t
-;;   :after org
-;;   :hook (kill-emacs . org-caldav-sync-at-close)
-;;   :init
-;;   (defun org-caldav-sync-at-close ()
-;;     (org-caldav-sync)
-;;     (save-some-buffers))
-;;   :config
-;;   (setq org-caldav-url "https://criteria8905.ddns.net/remote.php/dav/calendars/disrupt9645")
-;;   (setq org-caldav-calendar-id "personal")
-;;   (setq org-caldav-inbox "~/.local/share/org/calendar.org")
-;;   (setq org-caldav-files nil)
-;;   (setq org-caldav-show-sync-results nil)
+(use-package org-caldav
+  :if (member (system-name) '("thinkpad" "desktop"))
+  :ensure t
+  :after org
+  ;; :hook (kill-emacs . org-caldav-sync-at-close)
+  ;; :init
+  ;; (defun org-caldav-sync-at-close ()
+  ;;   (org-caldav-sync)
+  ;;   (save-some-buffers))
+  :config
+  (setq org-caldav-url (plist-get (car (auth-source-search :machine "sync.infomaniak.com:443" :max 1)) :url))
+  (setq org-caldav-calendar-id (plist-get (car (auth-source-search :machine "sync.infomaniak.com:443" :max 1)) :id))
+  (setq org-caldav-inbox "~/.local/share/org/calendar.org")
+  (setq org-caldav-files nil)
+  ;; (setq org-caldav-show-sync-results nil)
 
-;;   (run-at-time nil (* 5 60) 'org-caldav-sync))
+  ;; (run-at-time nil (* 5 60) 'org-caldav-sync)
+  )
 
 (use-package org-faces
   :after org

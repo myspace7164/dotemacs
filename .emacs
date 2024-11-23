@@ -1,22 +1,11 @@
-(defvar my/lisp-dir (locate-user-emacs-file "lisp"))
+(when (not (eq system-type 'darwin))
+  (menu-bar-mode -1))
 
-(unless (file-directory-p my/lisp-dir)
-  (make-directory my/lisp-dir))
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 
-(defun load-lisp-file (file)
-  (let ((file-path (expand-file-name file my/lisp-dir)))
-    (when (file-exists-p file-path)
-      (load-file file-path))))
-
-(cond
- ((eq system-type 'gnu/linux)
-  (load-lisp-file "linux-init.el"))
- ((eq system-type 'windows-nt)
-  (load-lisp-file "windows-init.el")))
-
-(load-lisp-file (concat "host-" (system-name) "-init.el"))
-
-(setq use-package-compute-statistics t)
+(setq inhibit-startup-message t)
+(setq visible-bell t)
 
 (use-package package
   :init
@@ -38,10 +27,6 @@
 
 (use-package bibtex
   :hook (bibtex-mode . (lambda () (setq-local fill-column 10000))))
-
-(use-package browse-url
-  :config
-  (setq browse-url-browser-function my/browse-url-browser-function))
 
 (use-package calendar
   :config
@@ -65,9 +50,9 @@
 ;;   :hook ((LaTeX-mode . citar-capf-setup)
 ;;          (org-mode . citar-capf-setup))
 ;;   :config
-;;   (setq citar-bibliography my/citar-bibliography)
-;;   (setq citar-library-paths my/citar-library-paths)
-;;   (setq citar-notes-paths my/citar-notes-paths))
+;;   (setq citar-bibliography '("~/Documents/books/references.bib"))
+;;   (setq citar-library-paths '("~/Documents/books"))
+;;   (setq citar-notes-paths '("~/Documents/books/notes"))
 
 ;; (use-package citar-denote
 ;;   :ensure t
@@ -246,7 +231,7 @@
 ;;   (defun my/denote-uml-file (description)
 ;;     (concat (file-name-sans-extension (file-name-nondirectory buffer-file-name)) "-" description "__"  "uml" ".svg"))
 
-;;   (setq denote-directory my/denote-directory)
+;;   (setq denote-directory "~/Documents/notes")
 ;;   (setq denote-dired-directories (list denote-directory)))
 
 (use-package dired
@@ -317,16 +302,11 @@
 
   (setq read-buffer-completion-ignore-case t))
 
-;; (use-package emacs
-;;   :if (or window-system (daemonp))
-;;   :bind ("<f5>" . modus-themes-toggle)
-;;   :config
-;;   ;; (setq modus-themes-mode-line (quote (accented)))
-;;   (load-theme my/system-theme :no-confirm))
-
-(use-package emacs
+(use-package ef-themes
+  :if (and (member (system-name) '("thinkpad" "desktop")) (or window-system (daemonp)))
+  :ensure t
   :config
-  (load-theme 'tango-dark :no-confirm))
+  (load-theme 'ef-owl :no-confirm))
 
 (use-package embark
   :ensure t
@@ -529,7 +509,8 @@
   :hook ((org-mode . turn-on-org-cdlatex)
          (org-mode . visual-line-mode))
   :config
-  (setq org-directory my/org-directory)
+  (setq org-directory "~/org")
+  
   (setq org-agenda-files (list org-directory "~/.local/share/org"))
   (setq org-default-notes-file (concat org-directory "notes.org"))
 
@@ -555,7 +536,14 @@
 (use-package org-agenda
   :bind ("C-c a" . org-agenda)
   :config
-  (setq org-agenda-custom-commands my/org-agenda-custom-commands))
+  (setq org-agenda-custom-commands '(("i" "Inbox" tags-todo "+inbox")
+	                                 ("s" "Shopping List" tags-todo "+buy")
+                                     ("o" "Todo" tags-todo "-project-someday-@aabacka/!-WAITING"
+                                      ((org-agenda-skip-function '(org-agenda-skip-subtree-if 'scheduled))
+                                       (org-agenda-skip-function '(org-agenda-skip-subtree-if 'deadline))
+                                       (org-agenda-skip-function '(org-agenda-skip-subtree-if 'timestamp))))
+                                     ("w" "Waiting" tags "/WAITING")
+                                     ("S" "Someday" tags-todo "+someday"))))
 
 ;; NOTE: Probably broken in org 9.7
 ;; (use-package org-appear
@@ -570,7 +558,31 @@
 (use-package org-capture
   :bind ("C-c c" . org-capture)
   :config
-  (setq org-capture-templates my/org-capture-templates))
+  (setq org-capture-templates '(("i" "Inbox" entry (file+headline "notes.org" "Inbox")
+                                 "* %?\n%U")
+                                ("t" "Task" entry (file+headline "notes.org" "Tasks")
+                                 "* TODO %?\n%U")
+                                ("m" "Mail" entry (file+headline "notes.org" "Inbox")
+                                 "* %:fromname\n%U\n%a\n%?")
+                                ("j" "Journal" entry (file+olp+datetree "notes.org" "Journal")
+                                 "* %U %^{Title}\n%U\n%?")
+                                ("J" "Journal (custom datetime)" entry (file+olp+datetree "notes.org" "Journal")
+                                 (file "~/Templates/journal.org") :time-prompt t)
+                                ("p" "Protocol" entry (file+headline "notes.org" "Inbox")
+                                 "* %^{Title}\n%U\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
+	                            ("L" "Protocol Link" entry (file+headline "notes.org" "Inbox")
+                                 "* %?[[%:link][%:description]] \n%U")))
+  (when (member (system-name) '("CHLFSTL0014"))
+    (setq org-capture-templates '(("i" "Inbox" entry (file+headline "frey_ag.org" "Inbox")
+                                   "* %?")
+                                  ("m" "Meeting notes" entry (file+headline "frey_ag.org" "Meetings")
+                                   "* %U %^{Title}\n%?")
+                                  ("M" "Meeting notes (custom datetime)" entry (file+headline "frey_ag.org" "Meetings")
+                                   "* %^U %^{Title}\n%?")
+                                  ("j" "Journal" entry (file+olp+datetree "frey_ag.org" "Journal")
+                                   "* %U %^{Title}\n%?")
+                                  ("J" "Journal (custom datetime)" entry (file+olp+datetree "frey_ag.org" "Journal")
+                                   "* %U %^{Title}\n%?" :time-prompt t)))))
 
 ;; TODO This needs some fixing, org-latex-previews are toggled even when latex previews are disabled
 ;; Write a function toggle-org-fragtog (or similar) which when enabled, will generate all latex previews and enable org-fragtog-mode, if org-fragtog-mode is disabled, no latex previews should be generated

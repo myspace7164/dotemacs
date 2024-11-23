@@ -1,7 +1,0 @@
-(setq my/citar-bibliography '("/mnt/c/Users/alexb/Tresorit/Documents/books/references.bib"))
-(setq my/citar-library-paths '("/mnt/c/Users/alexb/Tresorit/Documents/books"))
-(setq my/denote-directory "/mnt/c/Users/alexb/Tresorit/Documents/notes")
-(setq my/system-theme 'modus-operandi)
-(setq my/browse-url-browser-function 'browse-url-default-browser)
-(setq my/org-directory "c:/Users/alexb/Org/")
-(setq my/default-font "Iosevka-10")

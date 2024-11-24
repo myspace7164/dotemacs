@@ -1,12 +1,3 @@
-(when (not (eq system-type 'darwin))
-  (menu-bar-mode -1))
-
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
-(setq inhibit-startup-message t)
-(setq visible-bell t)
-
 (use-package package
   :init
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -283,6 +274,10 @@
 (use-package emacs
   :bind ("M-Q" . unfill-paragraph)
   :config
+  (tool-bar-mode -1)
+
+  (setq visible-bell t)
+
   (setq delete-by-moving-to-trash t)
   (setq mac-right-option-modifier "none")
   (setq use-short-answers t)
@@ -727,6 +722,11 @@
   :config
   (setq-default indent-tabs-mode nil)
   (column-number-mode 1))
+
+(use-package startup
+  :no-require
+  :config
+  (setq inhibit-startup-message t))
 
 (use-package tab-bar
   :bind (("C-c <left>" . tab-bar-history-back)

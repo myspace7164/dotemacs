@@ -514,6 +514,11 @@
   (setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "WAITING(w@/!)" "|" "DONE(d)" "CANCELED(c@)")))
   (setq org-use-fast-todo-selection 'expert)
 
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+  (setq org-startup-indented t)
+  (setq org-startup-folded 'fold)
+
   (setq org-image-actual-width nil)
 
   (add-to-list 'org-structure-template-alist '("p" . "src python") t)

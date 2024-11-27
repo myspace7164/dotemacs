@@ -505,8 +505,13 @@
          (org-mode . visual-line-mode))
   :config
   (setq org-directory "~/org")
+  (when (member (system-name) '("WINDOWS"))
+    (setq org-directory "C:/Users/alexb/kDrive/org"))
   
   (setq org-agenda-files (list org-directory "~/.local/share/org"))
+  (when (member (system-name) '("WINDOWS"))
+    (setq org-agenda-files (list org-directory)))
+
   (setq org-default-notes-file (concat org-directory "notes.org"))
 
   (setq org-special-ctrl-k t)
@@ -722,6 +727,12 @@
 (use-package savehist
   :config
   (savehist-mode 1))
+
+(use-package standard-themes
+  :if (and (member (system-name) '("WINDOWS")) (or window-system (daemonp)))
+  :ensure t
+  :config
+  (load-theme 'standard-light :no-confirm))
 
 (use-package simple
   :config

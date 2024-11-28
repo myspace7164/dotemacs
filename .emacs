@@ -269,7 +269,8 @@
   (eldoc-echo-area-use-multiline-p nil))
 
 (use-package elec-pair
-  :hook (prog-mode . electric-pair-local-mode))
+  :hook ((comint-mode . electric-pair-local-mode)
+         (prog-mode . electric-pair-local-mode)))
 
 (use-package emacs
   :bind ("M-Q" . unfill-paragraph)
@@ -279,6 +280,7 @@
   (setq visible-bell t)
 
   (setq delete-by-moving-to-trash t)
+  (setq enable-recursive-minibuffers t)
   (setq mac-right-option-modifier "none")
   (setq use-short-answers t)
 
@@ -362,8 +364,8 @@
   :ensure t
   :defer t
   :config
-  (setq magit-repository-directories '(("~/src" . 1)
-                                       ("~/.emacs.d" . 0)
+  (setq magit-repository-directories '(("~" . 1)
+                                       ("~/src" . 1)
                                        ("~/.mozilla/firefox" . 1)
                                        ("~/Mozilla/Firefox/Profiles" . 1))))
 
@@ -376,6 +378,9 @@
   :ensure t
   :mode "\\.md\\'")
 
+(use-package matlab-mode
+  :if (member (system-name) '("CHLFSTL0014"))
+  :ensure t)
 (use-package minibuffer
   :config
   (setq completion-cycle-threshold 3)
@@ -544,6 +549,11 @@
 
   (when (member (system-name) '("thinkpad"))
     (plist-put org-format-latex-options :scale 0.3)))
+
+(use-package org
+  :if (member (system-name) '("CHLFSTL0014"))
+  :config
+  (setq org-duration-format '(("h" . t) (special . 2))))
 
 (use-package org-agenda
   :bind ("C-c a" . org-agenda)
@@ -721,6 +731,12 @@
   :mode "\\.plantuml\\'"
   :custom
   (plantuml-jar-path "~/.local/share/plantuml/plantuml.jar"))
+
+(use-package python
+  :bind (nil
+         :repeat-map python-repeat-map
+         ("<" . python-indent-shift-left)
+         (">" . python-indent-shift-right)))
 
 (use-package recentf
   :config

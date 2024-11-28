@@ -297,8 +297,13 @@
 
   (setq read-buffer-completion-ignore-case t))
 
+(use-package emacs
+  :if (and (member (system-name) '("CHLFSTL0014")) (or window-system (daemonp)))
+  :config
+  (menu-bar-mode -1))
+
 (use-package ef-themes
-  :if (and (member (system-name) '("thinkpad" "desktop")) (or window-system (daemonp)))
+  :if (and (member (system-name) '("thinkpad" "desktop" "CHLFSTL0014")) (or window-system (daemonp)))
   :ensure t
   :config
   (load-theme 'ef-owl :no-confirm))
@@ -507,9 +512,11 @@
   (setq org-directory "~/org")
   (when (member (system-name) '("WINDOWS"))
     (setq org-directory "C:/Users/alexb/kDrive/org"))
+  (when (member (system-name) '("CHLFSTL0014"))
+    (setq org-directory "//1289291.connect.kdrive.infomaniak.com@SSL/DavWWWRoot/org/"))
   
   (setq org-agenda-files (list org-directory "~/.local/share/org"))
-  (when (member (system-name) '("WINDOWS"))
+  (when (member (system-name) '("WINDOWS" "CHLFSTL0014"))
     (setq org-agenda-files (list org-directory)))
 
   (setq org-default-notes-file (concat org-directory "notes.org"))

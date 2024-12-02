@@ -229,7 +229,7 @@
   :bind (nil
          :map dired-mode-map
          ("b" . dired-up-directory))
-  :hook (dired-mode . (lambda () (dired-hide-details-mode 1)))
+  :hook (dired-mode . dired-hide-details-mode)
   :custom
   (dired-auto-revert-buffer t)
   (dired-recursive-copies 'always)
@@ -344,7 +344,8 @@
          ("s" . flyspell-mode)))
 
 (use-package hl-line
-  :hook ((org-agenda-mode . hl-line-mode)
+  :hook ((dired-mode . hl-line-mode)
+         (org-agenda-mode . hl-line-mode)
          (prog-mode . hl-line-mode)))
 
 (use-package ispell
@@ -711,7 +712,7 @@
            :publishing-function org-publish-attachment))))
 
 (use-package pascal-mode
-  :mode "\\.st\\'")
+  :mode "\\.\\(pou\\|st\\)\\'")
 
 (use-package pdf-tools
   :if (member (system-name) '("thinkpad"))
